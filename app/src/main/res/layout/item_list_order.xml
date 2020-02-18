@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/material_white"
+    android:padding="5dp"
+
+    android:paddingBottom="6dp"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/order_imageView11"
+        android:layout_width="55dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mocha" />
+
+    <TextView
+        android:id="@+id/order_tv_num_person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/raleway"
+        android:text="No. of Pieces 5-7"
+
+        android:textColor="@color/color_dark_blue"
+        app:layout_constraintStart_toStartOf="@+id/order_name_pro"
+        app:layout_constraintTop_toBottomOf="@+id/order_name_pro" />
+
+    <TextView
+        android:id="@+id/order_name_pro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/raleway"
+        android:text="Fresh Cake"
+        android:textColor="@color/colorTextBlack"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/order_imageView11"
+        app:layout_constraintTop_toTopOf="@+id/order_imageView11" />
+
+    <TextView
+        android:id="@+id/price_order_pro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/roboto"
+        android:text="15.00"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+
+        android:id="@+id/order_button_mines"
+        android:layout_width="22dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/back_pink"
+        android:fontFamily="@font/roboto"
+        android:text="-"
+        android:textColor="#F45B55"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/order_button2_puls"
+        app:layout_constraintEnd_toStartOf="@+id/order_tv_quantity"
+        app:layout_constraintTop_toTopOf="@+id/order_button2_puls"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/order_button2_puls"
+        android:layout_width="22dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="4dp"
+
+        android:background="@drawable/back_pink"
+        android:fontFamily="@font/roboto"
+        android:text="+"
+        android:textColor="#F45B55"
+
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/price_order_pro"
+        app:layout_constraintTop_toBottomOf="@+id/price_order_pro" />
+
+    <TextView
+        android:id="@+id/order_tv_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="1"
+        android:textColor="@color/color_dark_blue"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/order_button2_puls"
+        app:layout_constraintEnd_toStartOf="@+id/order_button2_puls"
+        app:layout_constraintTop_toTopOf="@+id/order_button2_puls" />
+</androidx.constraintlayout.widget.ConstraintLayout>

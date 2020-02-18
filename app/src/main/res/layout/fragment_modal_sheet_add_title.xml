@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:theme="@style/MyMeterialApapTheme.AppTheme"
+    android:layout_height="wrap_content"
+
+    android:background="@drawable/selector_modal_sheet">
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/raleway"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:text="@string/location" />
+
+    <TextView
+        android:id="@+id/textView19a"
+        android:layout_marginTop="24dp"
+        android:layout_width="wrap_content"
+        android:fontFamily="@font/raleway"
+
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:text="@string/add_title_to_list" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+
+   android:layout_margin="16dp"
+        android:layout_marginTop="11dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+         app:boxStrokeColor="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:hint="@string/add_title_to_list"
+        app:hintTextColor="@color/colorPrimary"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+android:textColor="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        app:cornerRadius="17dp"
+        android:layout_marginTop="32dp"
+        android:padding="13dp"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:textAllCaps="false"
+
+
+        />
+
+
+
+
+
+
+</LinearLayout>
