@@ -129,6 +129,7 @@ public class EditeProfileActivity extends AppCompatActivity {
 */
 
     private void updateUser() {
+
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -168,12 +168,10 @@ Product productForMyProductCollection;
                 firestore.collection("orders").
                         document(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
                         .collection("myProducts").document(productForMyProductCollection.getProductId())
-                        .set(productForMyProductCollection).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        .set(productForMyProductCollection).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                        Toast.makeText(getApplicationContext(),"Add MyProduct successfuly",Toast.LENGTH_SHORT).show();
-                        //startActivity(new Intent(getApplicationContext(),HomeActivity.class));
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

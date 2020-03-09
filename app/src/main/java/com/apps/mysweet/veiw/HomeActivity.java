@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.apps.mysweet.R;
 import com.apps.mysweet.model.Category;
 import com.apps.mysweet.model.Constants;
+import com.apps.mysweet.model.Order;
 import com.apps.mysweet.viewmodel.OrderViewModel;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -30,59 +31,84 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomeActivity extends AppCompatActivity implements HomeFragment.onFragmentListener {
-  BottomNavigationView navigationView;
+    BottomNavigationView navigationView;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private static final int REQUEST_LOCATION_PERMISSION = 100;
     private static final int REQUEST_LOCATION_SETTINGS = 101;
     private LocationRequest locationRequest;
-static OrderViewModel    orderViewModel ;
+    static OrderViewModel orderViewModel;
+    BasketFragment basketFragment;
+     HomeFragment homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-             orderViewModel = ViewModelProviders.of(this).get(OrderViewModel .class);
-              fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(getApplicationContext());
+        orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+        navigationView = findViewById(R.id.bottom_navigation);
+        basketFragment = new BasketFragment();
+        homeFragment =new HomeFragment();
 
-      createNavigationView();
+        receivedIntentFromModalSheetAddTitle();
+        createNavigationView();
 
-      hideStaustBar();
+        hideStaustBar();
 
         createLocationRequest();
         createLocationCallback();
 
 
-     }
+    }
+    private void receivedIntentFromModalSheetAddTitle() {
+        if (getIntent().getBooleanExtra("IsComesFromAddTitle", false)) {
+
+         /*   if (getIntent().getStringExtra("Address") != null) {
+                Bundle b = new Bundle();
+                b.putString("Address", getIntent().getStringExtra("Address"));
+                basketFragment.setArguments(b);
+                Toast.makeText(getApplicationContext(), "true ", Toast.LENGTH_SHORT).show();
+            }
+*/
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_home, new BasketFragment()).commit();
+            navigationView.setSelectedItemId(R.id.action_basket);
+        }
+    }
 
     private void createNavigationView() {
-           navigationView=findViewById(R.id.bottom_navigation);
-      navigationView.performClick();
+        navigationView.performClick();
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_home:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_home,new HomeFragment() ).commit();
+                        return true;
+                    case R.id.action_basket:
 
-                        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                            @Override
-                            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                                switch (item.getItemId()){
-                                    case R.id.action_home:
-                                       getSupportFragmentManager().beginTransaction().replace(R.id.frame_home,new HomeFragment()).commit();
-                                    return true;
-                                    case R.id.action_basket:
-                                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_home,new BasketFragment()).commit();
-                                        return true;
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.frame_home, new BasketFragment()).commit();
+                        return true;
 
-                                }
-                                return false;
-                            }
-                        });
+                }
+                return false;
+            }
+        });
         navigationView.setSelectedItemId(R.id.action_home);
 
-               }
+    }
 
     @Override
     public void categorySelected(Category category) {
@@ -115,9 +141,6 @@ static OrderViewModel    orderViewModel ;
     }
 
 
-
-
-
     protected void createLocationRequest() {
         locationRequest = new LocationRequest();
         locationRequest.setInterval(10000);
@@ -136,7 +159,6 @@ static OrderViewModel    orderViewModel ;
                 }
                 Location location = locationResult.getLastLocation();
                 if (location != null) {
-                    Log.d("ttt",location.getLatitude()+"");
                 }
                 fusedLocationProviderClient.removeLocationUpdates(locationCallback);
             }
@@ -145,19 +167,18 @@ static OrderViewModel    orderViewModel ;
     // دالة فحص البيرمشن واذا لم يكن معطي يطلب
 
 
-
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("ttt","onResume");
         readLocation();
-
+ receivedIntentFromModalSheetAddTitle();
     }
 
     // دالة قراءة الموقع ويستحسن استدعاءها في onresume
     public void readLocation() {
         checkLocationPermission();
     }
+
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -167,6 +188,7 @@ static OrderViewModel    orderViewModel ;
             //   progressDialog.show();
         }
     }
+
     // دالة فحص تشغيل الgps وطلب تشغيله اذا كان مغلق
     private void checkLocationSettings() {
         final LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build();
@@ -177,8 +199,6 @@ static OrderViewModel    orderViewModel ;
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 if (locationSettingsResponse.getLocationSettingsStates().isLocationUsable()) {
                     //showProgressDialog();
-                    Log.d("ttt","success");
-                    Toast.makeText(getApplicationContext(), "available success", Toast.LENGTH_SHORT).show();
                     requestLocationRead();
                 } else {
                     Toast.makeText(getApplicationContext(), "Location Unavailable", Toast.LENGTH_SHORT).show();
@@ -190,7 +210,7 @@ static OrderViewModel    orderViewModel ;
             public void onFailure(@NonNull Exception e) {
                 ResolvableApiException resolvableApiException = (ResolvableApiException) e;
                 try {
-                    Log.d("ttt","failuer");
+                    Log.d("ttt", "failuer");
                     //    if (progressDialog.isShowing()){
                     //       progressDialog.dismiss();
                     // }
@@ -203,6 +223,7 @@ static OrderViewModel    orderViewModel ;
         });
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
@@ -210,9 +231,7 @@ static OrderViewModel    orderViewModel ;
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //  progressDialog.show();
                 checkLocationSettings();
-            }
-            else {
-                Log.d("ttt","showAlert()");
+            } else {
             }
         }
     }
@@ -224,8 +243,6 @@ static OrderViewModel    orderViewModel ;
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         } else {
             //   progressDialog.show();
-            Log.d("ttt","available");
-            Toast.makeText(this, "available", Toast.LENGTH_SHORT).show();
 
             fusedLocationProviderClient
                     .requestLocationUpdates(locationRequest,
@@ -233,6 +250,7 @@ static OrderViewModel    orderViewModel ;
 
         }
     }
+
     // عند طلب البيرمشن ماذا يعود من المستخدم هل موافقة ام لا
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -245,12 +263,6 @@ static OrderViewModel    orderViewModel ;
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
 
 
 }

@@ -56,7 +56,7 @@ String sender;
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.my_message, parent, false))  ;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder{
         TextView msgUser,msgBranch;
         public ViewHolder(@NonNull View itemView) {
 

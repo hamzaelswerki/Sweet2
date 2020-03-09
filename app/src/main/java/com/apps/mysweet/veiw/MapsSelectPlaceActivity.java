@@ -64,21 +64,23 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-     createButtonSelect();
+        createButtonSelect();
 
         createLocationRequest();
 
     }
 
     private void createButtonSelect() {
-     buttonSelect=findViewById(R.id.btn_select);
-     buttonSelect.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View view) {
-             ModalSheetAddTittle modalSheetAddTittle=new ModalSheetAddTittle();
-               modalSheetAddTittle.show(getSupportFragmentManager(),modalSheetAddTittle.getTag());
-         }
-     });
+        buttonSelect = findViewById(R.id.btn_select);
+        buttonSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ModalSheetAddTittle modalSheetAddTittle = new ModalSheetAddTittle();
+                modalSheetAddTittle.show(getSupportFragmentManager(), modalSheetAddTittle.getTag());
+
+            }
+        });
     }
 
 
@@ -86,8 +88,8 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-          createLocationCallback(googleMap);
-           readLocation();
+        createLocationCallback(googleMap);
+        readLocation();
         // Setting a click event handler for the map
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -95,7 +97,7 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
             public void onMapClick(LatLng latLng) {
 
 
-                  userLocationMarker = new MarkerOptions().position(latLng).title("My Location")
+                userLocationMarker = new MarkerOptions().position(latLng).title("My Location")
                         .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_group_13005));
 
                 // Clears the previously touched position
@@ -110,9 +112,8 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
         });
 
 
-
-
     }
+
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
@@ -123,20 +124,15 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
     }
 
 
-
-
-
-
-
-
     protected void createLocationRequest() {
-        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(getApplicationContext());
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
         locationRequest = new LocationRequest();
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
+
     // دالة طلب الموقع الحديث بواسطة ال gps
     private void createLocationCallback(final GoogleMap mMaps) {
         locationCallback = new LocationCallback() {
@@ -156,17 +152,15 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
 
                     userLocationMarker = new MarkerOptions()
                             .position(new LatLng(location.getLatitude()
-                                    ,location.getLongitude())).title("My Location")
+                                    , location.getLongitude())).title("My Location")
                             .icon(bitmapDescriptorFromVector(getApplicationContext()
                                     , R.drawable.ic_group_13005));
-                  MylocationMarker=  mMaps.addMarker(userLocationMarker);
-                 Log.d("ttt",location.getLatitude()+location.getLongitude()+"");
+                    MylocationMarker = mMaps.addMarker(userLocationMarker);
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                             new LatLng(location.getLatitude()
-                                    ,location.getLongitude()), 14), 3000, null);
+                                    , location.getLongitude()), 14), 3000, null);
 
                 }
-              //  fusedLocationProviderClient.removeLocationUpdates(locationCallback);
             }
         };
 
@@ -175,11 +169,9 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
     // دالة فحص البيرمشن واذا لم يكن معطي يطلب
 
 
-
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("ttt","onResume");
         readLocation();
 
     }
@@ -188,15 +180,16 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
     public void readLocation() {
         checkLocationPermission();
     }
+
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         } else {
             checkLocationSettings();
-            //   progressDialog.show();
         }
     }
+
     // دالة فحص تشغيل الgps وطلب تشغيله اذا كان مغلق
     private void checkLocationSettings() {
         final LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build();
@@ -206,8 +199,6 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 if (locationSettingsResponse.getLocationSettingsStates().isLocationUsable()) {
-                    //showProgressDialog();
-                    Log.d("ttt","success");
                     Toast.makeText(getApplicationContext(), "available success", Toast.LENGTH_SHORT).show();
                     requestLocationRead(mMap);
                 } else {
@@ -220,35 +211,30 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
             public void onFailure(@NonNull Exception e) {
                 ResolvableApiException resolvableApiException = (ResolvableApiException) e;
                 try {
-                    Log.d("ttt","failuer");
-                    //    if (progressDialog.isShowing()){
-                    //       progressDialog.dismiss();
-                    // }
+                    Log.d("ttt", "failuer");
+
                     resolvableApiException.startResolutionForResult(MapsSelectPlaceActivity.this, REQUEST_LOCATION_SETTINGS);
                 } catch (Exception ex) {
-                    //   if (progressDialog.isShowing()){ progressDialog.dismiss(); }
                     ex.printStackTrace();
                 }
             }
         });
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //  progressDialog.show();
                 checkLocationSettings();
-            }
-            else {
-                Log.d("ttt","showAlert()");
+            } else {
             }
         }
     }
 
     // دالة طلب قراءة الموقع
-    private void requestLocationRead( final GoogleMap mMap) {
+    private void requestLocationRead(final GoogleMap mMap) {
         if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
@@ -256,11 +242,11 @@ public class MapsSelectPlaceActivity extends FragmentActivity implements OnMapRe
 
             fusedLocationProviderClient
                     .requestLocationUpdates(locationRequest,
-                               locationCallback , Looper.getMainLooper());
-            Log.d("ttt","available hamza");
+                            locationCallback, Looper.getMainLooper());
 
         }
     }
+
     // عند طلب البيرمشن ماذا يعود من المستخدم هل موافقة ام لا
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

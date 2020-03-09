@@ -35,7 +35,7 @@ public class MyProductsAdapter extends FirestoreRecyclerAdapter<Product, MyProdu
     public  interface  OnUpdateQuantity{
         void onUpdated(Product product);
     }
-    OnUpdateQuantity onUpdateQuantity;
+    private OnUpdateQuantity onUpdateQuantity;
    public void setOnbuttonUpdatesLustener(OnUpdateQuantity onUpdateQuantity){
         this.onUpdateQuantity=onUpdateQuantity;
     }

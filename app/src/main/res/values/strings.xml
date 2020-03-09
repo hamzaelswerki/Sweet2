@@ -86,4 +86,11 @@
     <string name="add_title_to_list">Add  the title to your list</string>
     <string name="Enter_yor_title">Enter your tittle</string>
     <string name="save">Save</string>
+    <string name="selection">Selection</string>
+    <string name="Add">Add</string>
+    <string name="Tittle">Title</string>
+    <string name="completed">completed</string>
+    <string name="active">active</string>
+    <string name="my_order">MyOrder</string>
+    <string name="my_orders">MyOrders</string>
 </resources>

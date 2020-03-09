@@ -22,5 +22,7 @@
     <color name="titles_profile">#242A37</color>
     <color name="icons_profilee">#BBBBBB</color>
     <color name="back_btn_dialog">#E9E9E9</color>
+    <color name="grey_color">#65242A37</color>
+
 
 </resources>
